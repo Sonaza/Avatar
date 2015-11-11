@@ -1,0 +1,94 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+..\FrameXML\UI.xsd">
+	
+	<DressUpModel name="AvatarModelFrame" parent="UIParent" frameStrata="BACKGROUND" hidden="true">
+		<Layers>
+			<Layer level="BACKGROUND">
+				<Texture name="$parentBackdrop" parentKey="backdrop" setAllPoints="true" hidden="true">
+					<Color r="0" g="0" b="0" a="0.6"/>
+				</Texture>
+			</Layer>
+		</Layers>
+		<Animations>
+			<AnimationGroup parentKey="fadein" setToFinalAlpha="true">
+				<Alpha fromAlpha="0.0" toAlpha="1.0" duration="0.5" order="1" smoothing="IN_OUT"/>
+				<Scripts>
+					<OnPlay function="AvatarModelFrame_OnFadeInPlay"/>
+				</Scripts>
+			</AnimationGroup>
+			<AnimationGroup parentKey="fadeout" setToFinalAlpha="true">
+				<Alpha fromAlpha="1.0" toAlpha="0.0" duration="0.25" order="1" smoothing="IN_OUT"/>
+				<Scripts>
+					<OnFinished function="AvatarModelFrame_OnFadeOutFinished"/>
+				</Scripts>
+			</AnimationGroup>
+		</Animations>
+		<Scripts>
+			<OnLoad function="AvatarModelFrame_OnLoad"/>
+			<OnShow function="AvatarModelFrame_OnShow"/>
+			<OnHide function="AvatarModelFrame_OnHide"/>
+			<OnUpdate function="AvatarModelFrame_OnUpdate"/>
+			<OnMouseUp function="AvatarModelFrame_OnMouseUp"/>
+			<OnMouseDown function="AvatarModelFrame_OnMouseDown"/>
+			<OnMouseWheel function="AvatarModelFrame_OnMouseWheel"/>
+		</Scripts>
+	</DressUpModel>
+
+	<Font name="AvatarInstructionsFont" font="Fonts\ARIALN.TTF" outline="NORMAL" virtual="true">
+		<Shadow>
+			<Offset>
+				<AbsDimension x="1" y="-1"/>
+			</Offset>
+			<Color r="0" g="0" b="0"/>
+		</Shadow>
+		<FontHeight>
+			<AbsValue val="16"/>
+		</FontHeight>
+		<Color r="1" g="1" b="1"/>
+	</Font>
+	<Font name="AvatarInstructionsButtonFont" font="Fonts\ARIALN.TTF" outline="NORMAL" virtual="true">
+		<Shadow>
+			<Offset>
+				<AbsDimension x="1" y="-1"/>
+			</Offset>
+			<Color r="0" g="0" b="0"/>
+		</Shadow>
+		<FontHeight>
+			<AbsValue val="12"/>
+		</FontHeight>
+		<Color r="1" g="1" b="1"/>
+	</Font>
+	
+	<Frame name="AvatarInstructionsFrame" parent="UIParent" frameStrata="FULLSCREEN_DIALOG" hidden="true">
+		<Size x="300" y="150"/>
+		<Anchors>
+			<Anchor point="CENTER"/>
+		</Anchors>
+		<Layers>
+			<Layer level="ARTWORK">
+				<FontString inherits="AvatarInstructionsFont" text="AVATAR_INSTRUCTIONS_TEXT">
+					<Anchors>
+						<Anchor point="TOP" relativePoint="CENTER" x="0" y="90"/>
+					</Anchors>
+				</FontString>
+			</Layer>
+		</Layers>
+		<Frames>
+			<Button parentKey="$parentLockButton" inherits="UIPanelButtonTemplate" text="AVATAR_INSTRUCTIONS_LOCK">
+				<Size x="180" y="30"/>
+				<Anchors>
+					<Anchor point="TOP" relativePoint="CENTER" x="0" y="0"/>
+				</Anchors>
+				<Scripts>
+					<OnClick function="AvatarModelFrame_Lock"/>
+				</Scripts>
+				<NormalFont style="AvatarInstructionsButtonFont"/>
+				<HighlightFont style="AvatarInstructionsButtonFont">
+					<Color r="1" g="0.85" b="0.1"/>
+				</HighlightFont>
+				<DisabledFont style="AvatarInstructionsButtonFont"/>
+			</Button>
+		</Frames>
+	</Frame>
+
+</Ui>
