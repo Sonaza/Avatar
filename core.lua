@@ -237,27 +237,6 @@ function AvatarModelFrame_OnHide(self)
 	self:StopMovingOrSizing();
 end
 
--- ANIM_ID = 97;
--- ANIM_MAX = 1750;
--- ANIM_SPEED = 1;
-
--- ANIM_ENABLE = 2;
-
-local AnimFrame = 0;
-function AvatarModelFrame_OnUpdate(self, elapsed)
-	if(not Addon.db.profile.enabled) then return end
-	
-	-- AnimFrame = AnimFrame + 1000 * elapsed * ANIM_SPEED;
-	-- if(AnimFrame >= ANIM_MAX) then AnimFrame = 0 end
-	
-	-- if(ANIM_ENABLE == 1) then
-	-- 	AvatarModelFrame:SetSequenceTime(ANIM_ID, AnimFrame);
-	-- elseif(ANIM_ENABLE == 2) then
-	-- 	AvatarModelFrame:SetSequence(ANIM_ID);
-	-- end
-end
-
-
 function Addon:UpdateLightDirection()
 	local l = self.db.profile.light;
 	
@@ -298,7 +277,7 @@ function Addon:SetFrameSettings()
 	Addon:UpdateLightDirection();
 	
 	local l = self.db.profile.light;
-	AvatarModelFrame:SetLight(1, 0,
+	AvatarModelFrame:SetLight(true, false,
 		l.dx, l.dy, l.dz,
 		l.ai, l.ar, l.ag, l.ab,
 		l.di, l.dr, l.dg, l.db
@@ -439,6 +418,21 @@ end
 -- Off Hand 	17
 -- Tabard 		19 
 
+function Addon:ShowingHelm()
+	local _, _, _, _, _, _, isHideVisual = C_Transmog.GetSlotInfo(1, LE_TRANSMOG_TYPE_APPEARANCE);
+	return not isHideVisual;
+end
+
+function Addon:ShowingCloak()
+	local _, _, _, _, _, _, isHideVisual = C_Transmog.GetSlotInfo(15, LE_TRANSMOG_TYPE_APPEARANCE);
+	return not isHideVisual;
+end
+
+function Addon:ShowingShoulders()
+	local _, _, _, _, _, _, isHideVisual = C_Transmog.GetSlotInfo(3, LE_TRANSMOG_TYPE_APPEARANCE);
+	return not isHideVisual;
+end
+
 function Addon:RefreshEquipmentToggle()
 	if(not self.db.profile.show.weapon and not self.db.profile.show.armor and not self.db.profile.show.tabard and not self.db.profile.show.shirt) then
 		Addon:Dress();
@@ -460,18 +454,22 @@ function Addon:RefreshEquipmentToggle()
 			AvatarModelFrame:UndressSlot(15);
 		end
 		
-		if(not ShowingHelm() or not self.db.profile.show.helm) then
+		if(not Addon:ShowingHelm() or not self.db.profile.show.helm) then
 			AvatarModelFrame:UndressSlot(1);
 		end
 		
-		if(not ShowingCloak()) then
+		if(not Addon:ShowingCloak()) then
 			AvatarModelFrame:UndressSlot(15);
 		end
-			
+		
+		if(not Addon:ShowingShoulders()) then
+			AvatarModelFrame:UndressSlot(3);
+		end
+		
 		if(not self.db.profile.show.tabard) then
 			AvatarModelFrame:UndressSlot(19);
 		end
-			
+		
 		if(not self.db.profile.show.shirt) then
 			AvatarModelFrame:UndressSlot(4);
 		end
@@ -501,26 +499,22 @@ function Addon:Dress()
 	
 	for slot_id = 1, 19 do
 		local item_id = GetInventoryItemID("player", slot_id);
-		local item_link = GetInventoryItemLink("player", slot_id);
+		-- local item_link = GetInventoryItemLink("player", slot_id);
 		
 		if(item_id) then
 			local item;
 			
-			local transmogged, visible_id, _ = nil, nil;
+			local isTransmogrified, visible_id, _ = nil, nil;
 			if(Addon:IsSlotTransmoggable(slot_id)) then
-				transmogged, _, _, _, _, visible_id = GetTransmogrifySlotInfo(slot_id);
-			end
-			
-			local gear_level = Addon.db.profile.gearLevel;
-			if(Addon.db.profile.gearLevelPerItem[slot_id] ~= 1) then
-				gear_level = Addon.db.profile.gearLevelPerItem[slot_id];
-			end
-			
-			if(not transmogged and (not Addon:IsSlotTransmoggable(slot_id) or gear_level == 1 or not Addon.db.profile.gearLevelAll)) then
-				item = item_link;
-			else
-				if(gear_level ~= 6) then
-					item = Addon:GetGearLeveledItemString(gear_level, visible_id);
+				local isTransmogrified, _, _, _, _, _, isHideVisual = C_Transmog.GetSlotInfo(slot_id, LE_TRANSMOG_TYPE_APPEARANCE);
+				local baseSourceID, baseVisualID, appliedSourceID, appliedVisualID, pendingSourceID, pendingVisualID, hasPendingUndo = C_Transmog.GetSlotVisualInfo(slot_id, LE_TRANSMOG_TYPE_APPEARANCE);
+				
+				if(not isHideVisual) then
+					if(isTransmogrified) then
+						item = appliedSourceID;
+					else
+						item = baseSourceID;
+					end
 				end
 			end
 			
