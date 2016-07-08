@@ -495,6 +495,8 @@ function Addon:UpdateConditionalToggle()
 end
 
 function Addon:UpdateItemSlot(slot_id)
+	if(not slot_id) then return end
+	
 	local item;
 	
 	if(Addon:IsSlotTransmoggable(slot_id)) then

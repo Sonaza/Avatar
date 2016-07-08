@@ -58,20 +58,20 @@ function Addon:IsSlotTransmoggable(slot)
 	return slot and INVENTORY_SLOTS[slot] and bit.band(INVENTORY_SLOTS[slot], SLOT_TYPE_UNTRANSMOGGABLE) == 0;
 end
 
-function Addon:PLAYER_EQUIPMENT_CHANGED(event, slot, hasItem)
+function Addon:PLAYER_EQUIPMENT_CHANGED(event, slot_id, hasItem)
 	if(hasItem) then
-		if(slot == 1 and not Addon:ShowingHelm()) then return end
-		if(slot == 15 and not Addon:ShowingCloak()) then return end
-		if(slot == 3 and not Addon:ShowingShoulders()) then return end
+		if(slot_id == 1 and not Addon:ShowingHelm()) then return end
+		if(slot_id == 15 and not Addon:ShowingCloak()) then return end
+		if(slot_id == 3 and not Addon:ShowingShoulders()) then return end
 		
-		if(Addon:IsArmorSlot(slot) and not self.db.profile.show.armor) then return end
+		if(Addon:IsArmorSlot(slot_id) and not self.db.profile.show.armor) then return end
 		
-		if(Addon:IsWeaponSlot(slot) and not self.db.profile.show.weapon) then return end
-		if(Addon:IsTabardSlot(slot) and not self.db.profile.show.tabard) then return end
+		if(Addon:IsWeaponSlot(slot_id) and not self.db.profile.show.weapon) then return end
+		if(Addon:IsTabardSlot(slot_id) and not self.db.profile.show.tabard) then return end
 		
 		Addon:UpdateItemSlot(slot_id);
 	else
-		AvatarModelFrame:UndressSlot(slot);
+		AvatarModelFrame:UndressSlot(slot_id);
 	end
 end
 
