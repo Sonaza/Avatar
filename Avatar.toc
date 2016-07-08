@@ -1,8 +1,8 @@
-## Interface: 60200
+## Interface: 70000
 ## Title: Avatar
 ## Notes: Show your character model as a part of your UI
 ## Author: Sonaza
-## Version: 1.3.2
+## Version: 2.0.0
 ## OptionalDeps: Ace3
 ## SavedVariables: AvatarDB
 
