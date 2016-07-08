@@ -251,40 +251,6 @@ local avatarOptions = {
 			},
 		},
 		
-		visual_group = {
-			type = "group",
-			name = "Gear Visual Options",
-			desc = "Gear Visual Options",
-			inline = true,
-			order = 24,
-			args = {
-				gearlevel_dropdown = {
-					type = "select",
-					order = 1,
-					name = "Visual Transmog Gear Level",
-					desc = "Since Mists of Pandaria same items have multiple skins with same item ID and Avatar cannot distinguish these items when transmogged due to API limitations. You can give custom gear level that is applied to all transmogrified items on avatar.",
-					style = "dropdown",
-					values = function() return gearLevelOptions; end,
-					set = function(info, value) Addon.db.profile.gearLevel = value; Addon:RefreshAvatar(); end,
-					get = function(info) return Addon.db.profile.gearLevel; end,
-				},
-				gearlevel_applyall = {
-					type = "toggle",
-					order = 20,
-					name = "Apply to All Items",
-					desc = "Instead of only applying the gear level to transmogrified items, apply it to all items.|n|nIf this option is not selected per item visual changes won't apply to non-transmogrified items.",
-					set = function(into, value) Addon.db.profile.gearLevelAll = value; Addon:RefreshAvatar(); end,
-					get = function(info) return Addon.db.profile.gearLevelAll; end,
-				},
-				
-				visual_per_item_header = {
-					type = "header",
-					name = "Options Per Item",
-					order = 40,
-				},
-			},
-		},
-		
 		lighting_group = {
 			type = "group",
 			name = "Lighting",
@@ -454,36 +420,6 @@ local avatarOptions = {
 		},
 	},
 };
-
-local visualItemSlots = {
-	{ slotID = 1, slotName = _G["INVTYPE_HEAD"], },
-	{ slotID = 3, slotName = _G["INVTYPE_SHOULDER"], },
-	{ slotID = 5, slotName = _G["INVTYPE_CHEST"], },
-	{ slotID = 6, slotName = _G["INVTYPE_WAIST"], },
-	{ slotID = 7, slotName = _G["INVTYPE_LEGS"], },
-	{ slotID = 8, slotName = _G["INVTYPE_FEET"], },
-	{ slotID = 9, slotName = _G["INVTYPE_WRIST"], },
-	{ slotID = 10, slotName = _G["INVTYPE_HAND"], },
-	{ slotID = 15, slotName = _G["INVTYPE_CLOAK"], },
-};
-
-local optionOrderIndex = 0;
-for _, data in ipairs(visualItemSlots) do
-	local slotID, slotName = data.slotID, data.slotName;
-	
-	avatarOptions.args.visual_group.args["visual_item" .. slotID .. "_dropdown"] = {
-		type = "select",
-		style = "dropdown",
-		order = 50 + optionOrderIndex,
-		name = slotName .. " Slot",
-		desc = "Change Visual Level for " .. slotName,
-		values = function() return gearLevelSingleOptions; end,
-		set = function(info, value) Addon.db.profile.gearLevelPerItem[slotID] = value; Addon:RefreshAvatar(); end,
-		get = function(info) return Addon.db.profile.gearLevelPerItem[slotID]; end,
-	}
-	
-	optionOrderIndex = optionOrderIndex + 1;
-end
 
 local AVATAR_DELETE_PROFILE = nil;
 

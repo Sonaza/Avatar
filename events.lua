@@ -25,7 +25,7 @@ local SLOT_TYPE_UNTRANSMOGGABLE	= 0x08;
 local INVENTORY_SLOTS = {
 	[1]		= SLOT_TYPE_ARMOR,
 	[3]		= SLOT_TYPE_ARMOR,
-	[4]		= SLOT_TYPE_ARMOR + SLOT_TYPE_UNTRANSMOGGABLE, -- Shirt (not really armor)
+	[4]		= SLOT_TYPE_ARMOR, -- Shirt
 	[5]		= SLOT_TYPE_ARMOR,
 	[6]		= SLOT_TYPE_ARMOR,
 	[7]		= SLOT_TYPE_ARMOR,
@@ -35,7 +35,7 @@ local INVENTORY_SLOTS = {
 	[15]	= SLOT_TYPE_ARMOR,
 	[16]	= SLOT_TYPE_WEAPON,
 	[17]	= SLOT_TYPE_WEAPON,
-	[19]	= SLOT_TYPE_TABARD + SLOT_TYPE_UNTRANSMOGGABLE,
+	[19]	= SLOT_TYPE_TABARD,
 };
 
 function Addon:IsWeaponSlot(slot)
@@ -60,25 +60,16 @@ end
 
 function Addon:PLAYER_EQUIPMENT_CHANGED(event, slot, hasItem)
 	if(hasItem) then
-		if(slot == 1 and not ShowingHelm()) then return end
-		if(slot == 15 and not ShowingCloak()) then return end
+		if(slot == 1 and not Addon:ShowingHelm()) then return end
+		if(slot == 15 and not Addon:ShowingCloak()) then return end
+		if(slot == 3 and not Addon:ShowingShoulders()) then return end
 		
 		if(Addon:IsArmorSlot(slot) and not self.db.profile.show.armor) then return end
 		
 		if(Addon:IsWeaponSlot(slot) and not self.db.profile.show.weapon) then return end
 		if(Addon:IsTabardSlot(slot) and not self.db.profile.show.tabard) then return end
 		
-		local transmogged, item;
-		
-		if(Addon:IsSlotTransmoggable(slot)) then
-			transmogged, _, _, _, _, item = GetTransmogrifySlotInfo(slot);
-		end
-		
-		if(not transmogged) then
-			item = GetInventoryItemLink("player", slot);
-		end
-		
-		AvatarModelFrame:TryOn(item);
+		Addon:UpdateItemSlot(slot_id);
 	else
 		AvatarModelFrame:UndressSlot(slot);
 	end

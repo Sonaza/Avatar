@@ -494,69 +494,36 @@ function Addon:UpdateConditionalToggle()
 	end
 end
 
+function Addon:UpdateItemSlot(slot_id)
+	local item;
+	
+	if(Addon:IsSlotTransmoggable(slot_id)) then
+		local isTransmogrified, _, _, _, _, _, isHideVisual = C_Transmog.GetSlotInfo(slot_id, LE_TRANSMOG_TYPE_APPEARANCE);
+		local baseSourceID, baseVisualID, appliedSourceID, appliedVisualID, pendingSourceID, pendingVisualID, hasPendingUndo = C_Transmog.GetSlotVisualInfo(slot_id, LE_TRANSMOG_TYPE_APPEARANCE);
+		
+		if(not isHideVisual) then
+			if(isTransmogrified) then
+				item = appliedSourceID;
+			else
+				item = baseSourceID;
+			end
+		end
+	end
+	
+	if(item) then
+		AvatarModelFrame:TryOn(item);
+	else
+		AvatarModelFrame:UndressSlot(slot_id);
+	end
+end
+
 function Addon:Dress()
 	AvatarModelFrame:Undress();
 	
 	for slot_id = 1, 19 do
-		local item_id = GetInventoryItemID("player", slot_id);
-		-- local item_link = GetInventoryItemLink("player", slot_id);
-		
-		if(item_id) then
-			local item;
-			
-			local isTransmogrified, visible_id, _ = nil, nil;
-			if(Addon:IsSlotTransmoggable(slot_id)) then
-				local isTransmogrified, _, _, _, _, _, isHideVisual = C_Transmog.GetSlotInfo(slot_id, LE_TRANSMOG_TYPE_APPEARANCE);
-				local baseSourceID, baseVisualID, appliedSourceID, appliedVisualID, pendingSourceID, pendingVisualID, hasPendingUndo = C_Transmog.GetSlotVisualInfo(slot_id, LE_TRANSMOG_TYPE_APPEARANCE);
-				
-				if(not isHideVisual) then
-					if(isTransmogrified) then
-						item = appliedSourceID;
-					else
-						item = baseSourceID;
-					end
-				end
-			end
-			
-			if(item) then
-				AvatarModelFrame:TryOn(item);
-			else
-				AvatarModelFrame:UndressSlot(slot_id);
-			end
-		end
+		Addon:UpdateItemSlot(slot_id);
 	end
 	
 	AvatarModelFrame:UndressSlot(16);
 	AvatarModelFrame:UndressSlot(17);
-end
-
-local gearLevelBonusID = {
-	[1] = nil,
-	[2] = {451, nil},
-	[3] = nil,
-	[4] = {449, 566},
-	[5] = {450, 567},
-}
-
-function Addon:GetGearLeveledItemString(gear_level, item_id)
-	if(not item_id) then return nil end
-	
-	local bonusIDs = gearLevelBonusID[gear_level];
-	
-	if(bonusIDs ~= nil) then
-		local _, _, _, item_level = GetItemInfo(item_id)
-		
-		local index = 1;
-		if(item_level and item_level >= 640) then
-			index = 2;
-		end
-		
-		local bonusID = bonusIDs[index];
-	
-		if(bonusID ~= nil) then
-			return string.format("item:%d:0:0:0:0:0:0:0:%d:0:0:0:1:%d", item_id, UnitLevel("player"), bonusID);
-		end
-	end
-	
-	return string.format("item:%d", item_id);
 end
