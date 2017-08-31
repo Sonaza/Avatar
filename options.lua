@@ -504,8 +504,6 @@ end
 
 function Addon:CloseOptions()
 	LibStub("AceConfigDialog-3.0"):Close("Avatar");
-	PlaySound("igCharacterInfoClose");
-	
 	GameTooltip:Hide();
 end
 
@@ -518,8 +516,6 @@ Addon:LoadOptions();
 
 function Addon:ShowOptions()
 	Addon:LockFrame();
-	
-	PlaySound("igCharacterInfoOpen");
 	
 	local dialog = LibStub("AceConfigDialog-3.0");
 	dialog:SetDefaultSize("Avatar", 590, 650);
