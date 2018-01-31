@@ -1,3 +1,6 @@
+## 2.0.2
+* Added allied race visual offsets and toggles.
+
 ## 2.0.1
 * TOC bump for patch 7.3.0.
 * Removed PlaySound from options opening.
