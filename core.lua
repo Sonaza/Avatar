@@ -519,7 +519,7 @@ end
 
 function Addon:PlayerHasAura(spell_id)
 	for aura_id = 1, 40 do
-		if(select(11, UnitAura("player", aura_id)) == spell_id) then
+		if(select(10, UnitAura("player", aura_id)) == spell_id) then
 			return true
 		end
 	end
