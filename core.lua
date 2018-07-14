@@ -107,6 +107,7 @@ Addon.RaceList = {
 	[22] = factionIcons.Alliance.." Worgen",
 	[29] = factionIcons.Alliance.." Void Elf",
 	[30] = factionIcons.Alliance.." Lightforged Draenei",
+	[34] = factionIcons.Alliance.." Dark Iron Dwarf",
 	[2] = factionIcons.Horde.." Orc",
 	[5] = factionIcons.Horde.." Undead",
 	[6] = factionIcons.Horde.." Tauren",
@@ -115,6 +116,7 @@ Addon.RaceList = {
 	[9] = factionIcons.Horde.." Goblin",
 	[27] = factionIcons.Horde.." Nightborne",
 	[28] = factionIcons.Horde.." Highmountain Tauren",
+	[36] = factionIcons.Horde.." Mag'har Orc",
 	[24] = "Pandaren",
 };
 
@@ -134,8 +136,10 @@ Addon.RaceIds = {
 	["Pandaren"] 	= 24,
 	["Nightborne"] 	= 27,
 	["HighmountainTauren"] = 28,
-	["VoidElf"] 	= 29,
+	["VoidElf"] 	       = 29,
 	["LightforgedDraenei"] = 30,
+	["DarkIronDwarf"]      = 34,
+	["MagharOrc"]          = 36,
 };
 
 Addon.Genders = {
@@ -151,7 +155,6 @@ Addon.Visual = {
 function Addon:OnEnable()
 	Addon:RegisterEvent("UNIT_PORTRAIT_UPDATE");
 	Addon:RegisterEvent("UNIT_MODEL_CHANGED");
-	Addon:RegisterEvent("UNIT_MODEL_UPDATE");
 	
 	Addon:RegisterEvent("PLAYER_EQUIPMENT_CHANGED");
 	
@@ -332,6 +335,7 @@ end
 -- 28 - Highmountain Tauren
 -- 29 - Void Elf
 -- 30 - Lightforged Draenei
+-- 34 - Dark Iron Dwarf
 
 function Addon:UpdateRace()
 	AvatarModelFrame:SetCustomRace(Addon.Visual.Race, Addon.Visual.Gender);
@@ -347,18 +351,28 @@ local RACE_POSITIONS = {
 	[2]		= {
 		[0]	= {-1.15, 0.04, -0.1},
 	},
+	-- Mag'har Orc
+	[36]	= {
+		[0]	= {-1.15, 0.04, -0.1},
+	},
 	
 	-- Dwarf
 	[3]		= {
 		[0]	= {-0.65, 0.0, -0.15},
 		[1]	= {-0.65, -0.03, -0.03},
 	},
+	-- Dark Iron
+	[34]	= {
+		[0]	= {-0.65, 0.0, -0.15},
+		[1]	= {-0.65, -0.03, -0.03},
+	},
 	
-	-- Tauren & Highmountain Tauren
+	-- Tauren
 	[6]		= {
 		[0]	= {-0.75, 0.02, 0.05},
 		[1]	= {-0.8, 0.01, -0.18},
 	},
+	-- Highmountain Tauren
 	[28]		= {
 		[0]	= {-0.75, 0.02, 0.25},
 		[1]	= {-0.8, 0.01, -0.18},

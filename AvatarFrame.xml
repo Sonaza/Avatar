@@ -27,7 +27,6 @@
 			<OnLoad function="AvatarModelFrame_OnLoad"/>
 			<OnShow function="AvatarModelFrame_OnShow"/>
 			<OnHide function="AvatarModelFrame_OnHide"/>
-			<OnUpdate function="AvatarModelFrame_OnUpdate"/>
 			<OnMouseUp function="AvatarModelFrame_OnMouseUp"/>
 			<OnMouseDown function="AvatarModelFrame_OnMouseDown"/>
 			<OnMouseWheel function="AvatarModelFrame_OnMouseWheel"/>

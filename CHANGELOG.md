@@ -1,3 +1,7 @@
+## 3.0.0
+* Updated for Battle for Azeroth.
+* Added support for new allied races: Dark Iron Dwarf and Mag'har Orc.
+
 ## 2.0.2
 * Added allied race visual offsets and toggles.
 

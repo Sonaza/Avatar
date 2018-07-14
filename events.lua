@@ -89,10 +89,6 @@ end
 
 function Addon:UNIT_MODEL_CHANGED(event, unit, ...)
 	if(unit == "player") then
-		-- Addon:RefreshAvatar();
+		 Addon:RefreshAvatar();
 	end
-end
-	
-function Addon:UNIT_MODEL_UPDATE(event, ...)
-	-- Addon:RefreshAvatar();
 end
